@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# get-volume script returns the percantage of battery load
+stat=`acpi -b | head -n1 | awk '{print $4-0}';`
+
+echo "-$stat%" # todo - if discharging, + if charging
