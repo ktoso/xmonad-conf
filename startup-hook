@@ -36,6 +36,10 @@ if [ -z "$(pgrep yeahconsole)" ] ; then
   xprop -id "$id" -f _NET_WM_WINDOW_OPACITY 32c -set _NET_WM_WINDOW_OPACITY 3221225472
 fi
 
+if [ -z "$(grep dunst)" ] ; then
+  dunst &
+fi
+
 #
 # APPLICATION LAUNCHER
 #

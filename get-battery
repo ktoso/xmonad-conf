@@ -1,6 +1,31 @@
 #!/bin/bash
 
 # get-volume script returns the percantage of battery load
-stat=`acpi -b | head -n1 | awk '{print $4-0}';`
+all=`acpi -b`
+stat=`echo $all | head -n1 | awk '{print $4-0}';`
 
-echo "-$stat%" # todo - if discharging, + if charging
+# colors ------------------------------------------
+red='\e[0;31m'
+RED='\e[1;31m'
+green='\e[0;32m'
+GREEN='\e[1;32m'
+
+NC='\e[0m' # No Color
+
+# Text color variables
+txtund=$(tput sgr 0 1)    # Underline
+txtbld=$(tput bold)       # Bold
+txtred=$(tput setaf 1)    # Red
+txtgrn=$(tput setaf 2)    # Green
+txtylw=$(tput setaf 3)    # Yellow
+txtblu=$(tput setaf 4)    # Blue
+txtpur=$(tput setaf 5)    # Purple
+txtcyn=$(tput setaf 6)    # Cyan
+txtwht=$(tput setaf 7)    # White
+txtrst=$(tput sgr0)       # Text reset  
+
+if [[ "$all" == *Discharging* ]] ; then
+  echo "-$stat%"
+else
+  echo "+$stat%"
+fi
