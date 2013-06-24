@@ -1,22 +1,26 @@
 #!/bin/sh
 # docs about cpufreq governors https://www.kernel.org/doc/Documentation/cpu-freq/governors.txt
 
-speed0=`cpufreq-info -f -c0`
-speed1=`cpufreq-info -f -c1`
-speed2=`cpufreq-info -f -c2`
-speed3=`cpufreq-info -f -c3`
+speed0=$((`cpufreq-info -f -c0` / 1000))
+speed1=$((`cpufreq-info -f -c1` / 1000))
+speed2=$((`cpufreq-info -f -c2` / 1000))
+speed3=$((`cpufreq-info -f -c3` / 1000))
 
-governors=`cpufreq-info -g`
+current=` cpufreq-info  | grep 'The gov' | head -n1 | awk '{print $3}' | sed 's/"//g'`
+all_governors=`cpufreq-info -g | sed 's/ /\n/g'`
+governors=`echo "$all_governors" | sed "s/$current/[$current]/g"`
+
 
 echo $cpuSpeeds
-echo "Governors: $governors"
+echo $governors
 
-dialog --nocancel \
-  --title "Select CPU Freq Scaling Governor" \
-  --menu "Current: $speed0 / $speed1 / $speed2 / $speed3 [MHz]" 20 60 14 \
-  Conservative "Scale CPU freq. slowly adjusting to load level [recommended]" \
-  Batterysave "Keep processors at 800 MHz, always." \
-  Performance "Keep processors at 2 GHz, always."
-#  Userspace "Allow user apps to use `scaling set speet` C level calls" \
-#  Ondemand "Aggressively adjust CPU freq - not recommended for laptops" \
+selected=`echo "${speed0} MHz | ${speed1} MHz | ${speed2} MHz | ${speed3} MHz\n$governors" | dmenu`
 
+echo $selected
+
+case "$selected" in
+"conservative" | "ondemand" | "userspace" | "powersave" | "performance")
+  kdesudo "cpufreq-set -g $selected"
+  kdialog --msgbox "CPU freq governor is now: $selected"
+  ;;
+esac
