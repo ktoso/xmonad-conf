@@ -36,8 +36,13 @@ if [ -z "$(pgrep yeahconsole)" ] ; then
   xprop -id "$id" -f _NET_WM_WINDOW_OPACITY 32c -set _NET_WM_WINDOW_OPACITY 3221225472
 fi
 
-if [ -z "$(grep dunst)" ] ; then
-  dunst &
+# dunst is a minimal notification manager
+# if [ -z "$(grep dunst)" ] ; then
+#   dunst &
+# fi
+
+if [ -z "$(grep xfce4-notifyd)" ] ; then
+  /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd &
 fi
 
 #
