@@ -48,6 +48,7 @@ myNormalBorderColor  = "#cccccc"      -- color of inactive border
 myBorderWidth        = 1              -- width of border around windows
 myTerminal           = "terminator"   -- which terminal software to use
 myIMRosterTitle      = "Buddy List"   -- title of roster on IM workspace
+mySkypeRosterTitle   = "kmalawski - Skype\033$(C\"b"
 
 
 {-
@@ -269,6 +270,7 @@ myManagementHooks = [
   , (className =? "Komodo IDE" <&&> resource =? "Toplevel") --> doFloat
   , (className =? "jetbrains-idea") --> doF (W.shift "5:Dev")
   , (className =? "Empathy") --> doF (W.shift "7:Chat")
+  , (className =? "Skype") --> doF (W.shift "7:Chat")
   , (className =? "Pidgin") --> doF (W.shift "7:Chat")
   , (className =? "Gimp-2.8") --> doF (W.shift "9:Pix")
   , (className =? "Amarok") --> doF (W.shift "9:Pix")
