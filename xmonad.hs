@@ -93,7 +93,7 @@ myWorkspaces =
     "7:Chat",  "8:Dbg", "9:Pix",
     "4:Docs",  "5:Dev", "6:Web",
     "1:Term",  "2:Hub", "3:Mail",
-    "0:VM",    "Extr1", "Extr2"
+    "0:VM",    "Media", "Extr2"
   ]
 
 startupWorkspace = "5:Dev"  -- which workspace do you want to be on after launch?
@@ -156,9 +156,7 @@ defaultLayouts = smartBorders(avoidStruts(
 -- The chat layout uses the "IM" layout. We have a roster which takes
 -- up 1/8 of the screen vertically, and the remaining space contains
 -- chat windows which are tiled using the grid layout. The roster is
--- identified using the myIMRosterTitle variable, and by default is
--- configured for Empathy, so if you're using something else you
--- will want to modify that variable.
+-- identified using the myIMRosterTitle variable.
 chatLayout = avoidStruts(withIM (1%7) (Title myIMRosterTitle) Grid)
 
 -- The GIMP layout uses the ThreeColMid layout. The traditional GIMP
@@ -338,9 +336,20 @@ myKeys = myKeyBindings ++
 
 
 {-
+  New status bars, with dzen2
+-}
+myXmoBar = "xmobar ~/.xmonad/xmobarrc"
+myXmonadBar = "dzen2 -x '1440' -y '0' -h '24' -w '640' -ta 'l' -fg '#000' -bg '#1B1D1E'"
+myStatusBar = "conky -c /home/ktoso/.xmonad/.conky_dzen | dzen2 -x '1000' -w '1040' -h '24' -ta 'r' -bg '#1B1D1E' -fg '#FFFFFF' -y '0'"
+myBitmapsDir = "/home/ktoso/.xmonad/dzen2"
+
+{-
   Here we actually stitch together all the configuration settings
   and run xmonad. We also spawn an instance of xmobar and pipe
   content into it via the logHook..
+
+  xmproc <- spawnPipe myXmonadBar
+  dzenRightBar <- spawnPipe myStatusBar
 -}
 
 main = do
