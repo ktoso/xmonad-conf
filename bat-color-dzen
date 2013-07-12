@@ -1,0 +1,11 @@
+#!/bin/sh
+bat=`$HOME/.xmonad/get-battery | cut -c 2-3`
+
+if [ "$bat" -lt "16" ]; then
+  echo "^fg(#cc0000)"
+elif [ "$bat" -gt "60" ]; then
+  echo "^fg(#00aa4a)"
+else
+  echo "^fg()"
+fi
+

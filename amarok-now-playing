@@ -1,0 +1,11 @@
+#!/bin/sh
+export DISPLAY=:0
+MESSAGE=""
+NOWPLAYING=`qdbus org.kde.amarok /Player org.freedesktop.MediaPlayer.GetMetadata`
+if [ $? = 0 ] && [ -n "$NOWPLAYING" ]; then
+  ARTIST=`echo "$NOWPLAYING" | sed -ne 's/^artist: \(.*\)$/\1/p'`
+  TRACK=`echo "$NOWPLAYING" | sed -ne 's/^title: \(.*\)$/\1/p'`
+  MESSAGE="$ARTIST - $TRACK"
+fi
+
+echo "$MESSAGE"

@@ -16,8 +16,13 @@
 -}
 
 import XMonad
+
 import XMonad.Config.Kde
-import XMonad.Hooks.SetWMName
+
+import XMonad.Prompt
+import XMonad.Prompt.RunOrRaise (runOrRaisePrompt)
+import XMonad.Prompt.AppendFile (appendFilePrompt)
+
 import XMonad.Layout.Grid
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.IM
@@ -26,13 +31,19 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.Circle
 import XMonad.Layout.PerWorkspace (onWorkspace)
 import XMonad.Layout.Fullscreen
+
 import XMonad.Util.EZConfig
 import XMonad.Util.Run
+
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.SetWMName
+
 import XMonad.Actions.Plane
 import XMonad.Actions.WindowBringer
+
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.UrgencyHook
+
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 import Data.Ratio ((%))
@@ -261,6 +272,7 @@ myManagementHooks = [
   , resource =? "stalonetray" --> doIgnore
   , className =? "rdesktop" --> doFloat
   , className =? "Yakuake" --> doFloat
+  , className =? "Plasma-desktop" --> doFloat
   , className =? "pantheon-notify" --> doFloat
   , (className =? "Komodo IDE") --> doF (W.shift "5:Dev")
   , (className =? "Komodo IDE" <&&> resource =? "Komodo_find2") --> doFloat
@@ -339,21 +351,23 @@ myKeys = myKeyBindings ++
   New status bars, with dzen2
 -}
 myXmoBar = "xmobar ~/.xmonad/xmobarrc"
-myXmonadBar = "dzen2 -x '1440' -y '0' -h '24' -w '640' -ta 'l' -fg '#000' -bg '#1B1D1E'"
-myStatusBar = "conky -c /home/ktoso/.xmonad/.conky_dzen | dzen2 -x '1000' -w '1040' -h '24' -ta 'r' -bg '#1B1D1E' -fg '#FFFFFF' -y '0'"
+myXmonadBar = "dzen2 -x '0' -y '0' -h '24' -w '790' -ta 'l'" ++ myDzenStyle
+myStatusBar = "conky -c /home/ktoso/.xmonad/.conky_dzen | dzen2 -x '790' -y '0' -w '777' -h '24' -ta 'r'" ++ myDzenStyle
 myBitmapsDir = "/home/ktoso/.xmonad/dzen2"
+myDzenStyle = " -bg '#000' -fg '#FFFFFF'"
 
 {-
   Here we actually stitch together all the configuration settings
   and run xmonad. We also spawn an instance of xmobar and pipe
   content into it via the logHook..
 
-  xmproc <- spawnPipe myXmonadBar
+  xmproc <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
   dzenRightBar <- spawnPipe myStatusBar
 -}
 
 main = do
-  xmproc <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
+  conky  <- spawnPipe myStatusBar
+  xmproc <- spawnPipe myXmonadBar
   xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig {
     focusedBorderColor = myFocusedBorderColor
   , normalBorderColor = myNormalBorderColor
@@ -372,12 +386,12 @@ main = do
       <+> manageDocks
   , logHook = dynamicLogWithPP $ xmobarPP {
       ppOutput = hPutStrLn xmproc
-      , ppTitle = xmobarColor myTitleColor "" . shorten myTitleLength
-      , ppCurrent = xmobarColor myCurrentWSColor ""
+      , ppTitle = dzenColor myTitleColor "" . shorten myTitleLength
+      , ppCurrent = dzenColor myCurrentWSColor ""
         . wrap myCurrentWSLeft myCurrentWSRight
-      , ppVisible = xmobarColor myVisibleWSColor ""
+      , ppVisible = dzenColor myVisibleWSColor ""
         . wrap myVisibleWSLeft myVisibleWSRight
-      , ppUrgent = xmobarColor myUrgentWSColor ""
+      , ppUrgent = dzenColor myUrgentWSColor ""
         . wrap myUrgentWSLeft myUrgentWSRight
     }
   }
