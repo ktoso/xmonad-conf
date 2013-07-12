@@ -7,5 +7,9 @@ stat=`echo $all | head -n1 | awk '{print $4-0}';`
 if [[ "$all" == *Discharging* ]] ; then
   echo "-$stat%"
 else
-  echo "+$stat%"
+  if [[ "$stat" == '100' ]]; then
+    echo "=$stat%"
+  else
+    echo "+$stat%"
+  fi
 fi

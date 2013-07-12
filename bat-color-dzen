@@ -1,7 +1,11 @@
 #!/bin/sh
-bat=`$HOME/.xmonad/get-battery | cut -c 2-3`
+state=`$HOME/.xmonad/get-battery`
+bat=`echo $state | cut -c 2-3`
+batall=`echo $state | cut -c 2-4`
 
-if [ "$bat" -lt "16" ]; then
+if [ "$batall" == "100" ]; then
+  echo "^fg()"
+elif [ "$bat" -lt "16" ]; then
   echo "^fg(#cc0000)"
 elif [ "$bat" -gt "60" ]; then
   echo "^fg(#00aa4a)"
