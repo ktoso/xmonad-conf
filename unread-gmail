@@ -1,0 +1,15 @@
+#!/bin/bash
+
+minutes=5
+
+# avoid http call if still quite up to date
+if test `find /home/ktoso/.xmonad/.unread-gmail-last-checked -mmin +$minutes`; then
+  sec=`cat ~/.gsec | tr a-zA-Z n-za-mN-ZA-M`
+  new=$(curl -u ktosopl:$sec --silent "https://mail.google.com/mail/feed/atom" \
+    | tr -d '\n' \
+    | xpath -q -e '//fullcount/text()')
+
+  echo $new > /home/ktoso/.xmonad/.unread-gmail-last-checked
+fi
+
+cat /home/ktoso/.xmonad/.unread-gmail-last-checked

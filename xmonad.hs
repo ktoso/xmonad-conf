@@ -272,6 +272,7 @@ myManagementHooks = [
   , resource =? "stalonetray" --> doIgnore
   , className =? "rdesktop" --> doFloat
   , className =? "Yakuake" --> doFloat
+  , className =? "vlc" --> doF (W.shift "9:Pix")
   , className =? "Plasma-desktop" --> doFloat
   , className =? "pantheon-notify" --> doFloat
   , (className =? "Komodo IDE") --> doF (W.shift "5:Dev")
