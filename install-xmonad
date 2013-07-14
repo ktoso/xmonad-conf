@@ -29,3 +29,5 @@ echo "Linking to customized gnome 2 configuration..."
 mv ~/.gtkrc-2.0 ~/gtkrc-2.0.original
 ln -s .xmonad/.gtkrc-2.0 ~/.gtkrc-2.0
 
+touch ~/.xmonad/.unread-gmail-last-checked
+
