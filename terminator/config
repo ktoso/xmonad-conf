@@ -1,0 +1,26 @@
+[global_config]
+  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, MavenPluginURLHandler, LaunchpadBugURLHandler
+  title_transmit_bg_color = "#0085ad"
+  focus = mouse
+[keybindings]
+  go_left = <Alt><Super>Left
+  go_down = <Alt><Super>Down
+  go_right = <Alt><Super>Right
+  go_up = <Alt><Super>Up
+[profiles]
+  [[default]]
+    background_darkness = 0.90
+    scrollback_lines = 10000
+    background_type = transparent
+#    background_type = image
+    background_image = /home/ktoso/Dropbox/Wallpapers/kagamine-rin-vocaloid-girl-flower-lily-blood.jpg
+    scroll_background = False
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+    [[[window0]]]
+      type = Window
+      parent = ""
+[plugins]
