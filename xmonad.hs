@@ -220,6 +220,7 @@ myKeyBindings =
     , ((0, 0x1008FF12), spawn "amixer -q set Master toggle")
     , ((0, 0x1008FF11), spawn "amixer -q set Master 10%-")
     , ((0, 0x1008FF13), spawn "amixer -q set Master 10%+")
+    , ((0, 0x1008FF13), spawn "kdesudo pm-hibernate")
   ]
 
 
@@ -272,6 +273,7 @@ myManagementHooks = [
   , resource =? "stalonetray" --> doIgnore
   , className =? "rdesktop" --> doFloat
   , className =? "Yakuake" --> doFloat
+  , className =? "Exe" --> doFloat
   , className =? "vlc" --> doF (W.shift "9:Pix")
   , className =? "Plasma-desktop" --> doFloat
   , className =? "pantheon-notify" --> doFloat

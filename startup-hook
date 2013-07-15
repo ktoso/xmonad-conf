@@ -45,6 +45,11 @@ if [ -z "$(grep xfce4-notifyd)" ] ; then
   /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd &
 fi
 
+if [ -z "$(pgrep git-dude)" ] ; then
+  git-dude &
+fi
+
+
 #
 # APPLICATION LAUNCHER
 #
