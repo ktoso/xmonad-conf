@@ -1,20 +1,14 @@
 [global_config]
-  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, MavenPluginURLHandler, LaunchpadBugURLHandler
-  title_transmit_bg_color = "#0085ad"
+  title_transmit_bg_color = "#0076c9"
   focus = mouse
 [keybindings]
-  go_left = <Alt><Super>Left
-  go_down = <Alt><Super>Down
-  go_right = <Alt><Super>Right
-  go_up = <Alt><Super>Up
 [profiles]
   [[default]]
-    background_darkness = 0.90
     scrollback_lines = 10000
+    font = Source Code Pro Medium 10
     background_type = transparent
-#    background_type = image
-    background_image = /home/ktoso/Dropbox/Wallpapers/kagamine-rin-vocaloid-girl-flower-lily-blood.jpg
-    scroll_background = False
+    use_system_font = False
+    background_image = /home/ktoso/Dropbox/Wallpapers/319785_149252351874223_1831590798_n.jpg
 [layouts]
   [[default]]
     [[[child1]]]
