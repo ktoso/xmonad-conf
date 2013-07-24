@@ -38,8 +38,11 @@ import XMonad.Util.Font
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName
+import XMonad.Hooks.ICCCMFocus
+
 
 import XMonad.Actions.Plane
+import XMonad.Actions.WorkspaceNames
 import XMonad.Actions.WindowBringer
 
 import XMonad.Hooks.ManageDocks
@@ -341,7 +344,7 @@ myKeys = myKeyBindings ++
   [
     ((m .|. myModMask, key), screenWorkspace sc
       >>= flip whenJust (windows . f))
-      | (key, sc) <- zip [xK_w, xK_e, xK_r] [1,0,2]
+      | (key, sc) <- zip [xK_w, xK_e, xK_r] [0,1,2]
       , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
   ] ++ 
   [
@@ -387,16 +390,13 @@ main = do
   , manageHook = manageHook defaultConfig
       <+> composeAll myManagementHooks
       <+> manageDocks
-  , logHook = dynamicLogWithPP $ xmobarPP {
+  , logHook = workspaceNamesPP defaultPP {
       ppOutput = hPutStrLn xmproc
       , ppTitle = dzenColor myTitleColor "" . shorten myTitleLength
-      , ppCurrent = dzenColor myCurrentWSColor ""
-        . wrap myCurrentWSLeft myCurrentWSRight
-      , ppVisible = dzenColor myVisibleWSColor ""
-        . wrap myVisibleWSLeft myVisibleWSRight
-      , ppUrgent = dzenColor myUrgentWSColor ""
-        . wrap myUrgentWSLeft myUrgentWSRight
-    }
+      , ppCurrent = dzenColor myCurrentWSColor "" . wrap myCurrentWSLeft myCurrentWSRight
+      , ppVisible = dzenColor myVisibleWSColor "" . wrap myVisibleWSLeft myVisibleWSRight
+      , ppUrgent = dzenColor myUrgentWSColor "" . wrap myUrgentWSLeft myUrgentWSRight
+    } >>= dynamicLogWithPP >> takeTopFocus
   }
     `additionalKeys` myKeys
 

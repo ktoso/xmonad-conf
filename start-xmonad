@@ -37,7 +37,7 @@ xcompmgr -n &
 # connected screens and find out what names you should use to refer to them.
 
 # Activate primary screen 
-xrandr --output LVDS-1 --auto --primary
+xrandr --output DP-1 --auto --primary
 
 # If we find that a screen is connected via VGA, activate it and position it
 # to the left of the primary screen.
