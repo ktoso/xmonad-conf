@@ -350,6 +350,10 @@ myKeys = myKeyBindings ++
   [
     ((myModMask .|. shiftMask, xK_g), gotoMenu)
     , ((myModMask .|. shiftMask, xK_b), bringMenu)
+  ] ++ 
+  [
+    ((mod4Mask .|. shiftMask, xK_r)
+    , renameWorkspace defaultXPConfig)
   ]
 
 
@@ -384,7 +388,7 @@ main = do
   , modMask = myModMask
   , handleEventHook = fullscreenEventHook
   , startupHook = do
-      setWMName "LG3D"
+      setWMName "LG3D" -- java hack (so it recognises xmonad as another window manager)
       windows $ W.greedyView startupWorkspace
       spawn "~/.xmonad/startup-hook"
   , manageHook = manageHook defaultConfig
