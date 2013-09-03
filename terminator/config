@@ -1,7 +1,10 @@
 [global_config]
+  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, MavenPluginURLHandler, LaunchpadBugURLHandler
   title_transmit_bg_color = "#0076c9"
   focus = mouse
 [keybindings]
+  move_tab_right = <Alt><Super>Right
+  move_tab_left = <Alt><Super>Left
 [profiles]
   [[default]]
     scrollback_lines = 10000

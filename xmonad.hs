@@ -31,6 +31,7 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.Circle
 import XMonad.Layout.PerWorkspace (onWorkspace)
 import XMonad.Layout.Fullscreen
+import XMonad.Hooks.ICCCMFocus
 
 import XMonad.Util.EZConfig
 import XMonad.Util.Run
@@ -272,6 +273,7 @@ myManagementHooks = [
   resource =? "synapse" --> doIgnore
   , resource =? "stalonetray" --> doIgnore
   , className =? "rdesktop" --> doFloat
+  , appName =? "sun-awt-X11-XWindowPeer" --> doFloat
   , className =? "Yakuake" --> doFloat
   , className =? "Exe" --> doFloat
   , className =? "vlc" --> doF (W.shift "9:Pix")
@@ -381,7 +383,7 @@ main = do
   , modMask = myModMask
   , handleEventHook = fullscreenEventHook
   , startupHook = do
-      setWMName "LG3D"
+      takeTopFocus >> setWMName "LG3D"
       windows $ W.greedyView startupWorkspace
       spawn "~/.xmonad/startup-hook"
   , manageHook = manageHook defaultConfig

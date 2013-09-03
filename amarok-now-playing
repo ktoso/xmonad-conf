@@ -1,5 +1,6 @@
 #!/bin/sh
 export DISPLAY=:0
+MAX_CHARS=30
 MESSAGE=""
 NOWPLAYING=`qdbus org.kde.amarok /Player org.freedesktop.MediaPlayer.GetMetadata`
 if [ $? = 0 ] && [ -n "$NOWPLAYING" ]; then
@@ -8,4 +9,4 @@ if [ $? = 0 ] && [ -n "$NOWPLAYING" ]; then
   MESSAGE="$ARTIST - $TRACK"
 fi
 
-echo "$MESSAGE"
+echo "$MESSAGE" | head -c $MAX_CHARS
