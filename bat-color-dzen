@@ -1,9 +1,9 @@
 #!/bin/sh
 state=`$HOME/.xmonad/get-battery`
-bat=`echo $state | cut -c 2-3`
+bat=`echo $state | cut -c 2-3 | sed 's/%//'`
 batall=`echo $state | cut -c 2-4`
 
-if [ "$batall" -eq "100" ]; then
+if [ "$bat" -eq "100" ]; then
   echo "^fg(#00aa4a)"
 elif [ "$bat" -lt "16" ]; then
   echo "^fg(#cc0000)"
