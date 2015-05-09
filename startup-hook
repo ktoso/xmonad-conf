@@ -45,19 +45,16 @@ if [ -z "$(grep xfce4-notifyd)" ] ; then
   /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd &
 fi
 
-if [ -z "$(pgrep git-dude)" ] ; then
-  git-dude &
-fi
+# transparency with xcompmgr
+xcompmgr -c &
 
+# set resolution to sane one
+$HOME/.xmonad/res.sh 1680
 
 #
 # APPLICATION LAUNCHER
 #
 
-# Use synapse as our app launcher. (-s: don't display until requested) 
-if [ -z "$(pgrep synapse)" ] ; then
-    synapse -s &
-fi
 
 # On login, we unlock the ssh keychain so we're not prompted for 
 # passphrases later. We pipe /dev/null to ssh-add to make it realize 
