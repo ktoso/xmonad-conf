@@ -1,0 +1,4 @@
+#!/bin/sh
+
+killall xflux
+xflux -l 50.0782920 -g 19.9052330

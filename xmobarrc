@@ -13,7 +13,7 @@
 Config { 
   -- Set font and default foreground/background colors. Note that
   -- the height of xmobar is controlled by the font you use.
-  font = "xft:Ubuntu Mono-14",
+  font = "xft:Source Code Pro",
   bgColor = "black",
   fgColor = "grey",
 
@@ -23,6 +23,10 @@ Config {
   -- want to be taking up the remainer of the space on the right side
   -- of your screen.
   position = TopW L 95, 
+
+  -- show on all screens
+  allDesktops = True,
+  pickBroadest = False,
 
   -- list of commands which gather information about your system for
   -- presentation in the bar. 

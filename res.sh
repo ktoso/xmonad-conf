@@ -19,7 +19,7 @@ if [ "$resolution" != "2880x1800+0+0" ]; then
 	xrandr --output DP-2 --scale 1x1;
 #Necessary to work around an issue where re-scaling 
 #only works if the scale is set to 1x1
-	sleep 3;
+	sleep 2;
 fi
 scale_w=$(echo "scale=4; $1/2880" | bc; exit );
 arg=$(echo "$scale_w""x""$scale_w")

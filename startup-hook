@@ -45,11 +45,14 @@ if [ -z "$(grep xfce4-notifyd)" ] ; then
   /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd &
 fi
 
+# set resolution to sane one
+$HOME/.xmonad/res.sh 1680
+
 # transparency with xcompmgr
 xcompmgr -c &
 
-# set resolution to sane one
-$HOME/.xmonad/res.sh 1680
+# start flux
+$HOME/.xmonad/start-flux
 
 #
 # APPLICATION LAUNCHER

@@ -78,8 +78,8 @@ myCurrentWSLeft  = "["        -- wrap active workspace with these
 myCurrentWSRight = "]"
 myVisibleWSLeft  = "("        -- wrap inactive workspace with these
 myVisibleWSRight = ")"
-myUrgentWSLeft   = "{"        -- wrap urgent workspace with these
-myUrgentWSRight  = "}"
+myUrgentWSLeft   = "!"        -- wrap urgent workspace with these
+myUrgentWSRight  = "!"
 
 
 {-
@@ -103,10 +103,10 @@ myUrgentWSRight  = "}"
 
 myWorkspaces =
   [
-    "7:Chat",  "8:Dbg", "9:Pix",
-    "4:Docs",  "5:Dev", "6:Web",
-    "1:Term",  "2:Hub", "3:Mail",
-    "0:VM",    "Media", "Extr2"
+    "7:Chat",  "8:Team", "9:Amarok",
+    "4:Docs",  "5:Dev",  "6:Web",
+    "1:Term",  "2:Hub",  "3:Mail",
+    "0:VM",    "Media",  "Extr2"
   ]
 
 startupWorkspace = "5:Dev"  -- which workspace do you want to be on after launch?
@@ -156,11 +156,7 @@ defaultLayouts = smartBorders(avoidStruts(
   -- the available space. Remaining windows tile to both the left and
   -- right of the master window. You can resize using "super-h" and
   -- "super-l".
-  ||| ThreeColMid 1 (3/100) (3/4)
-
-  -- Circle layout places the master window in the center of the screen.
-  -- Remaining windows appear in a circle around it
-  ||| Circle))
+  ||| ThreeColMid 1 (3/100) (3/4)))
 
 
 -- Here we define some layouts which will be assigned to specific
@@ -184,7 +180,7 @@ gimpLayout = smartBorders(avoidStruts(ThreeColMid 1 (3/100) (3/4)))
 -- layouts.
 myLayouts =
     onWorkspace "7:Chat" chatLayout
-  $ onWorkspace "9:Pix" gimpLayout
+  $ onWorkspace "9:Amarok" gimpLayout
   $ defaultLayouts
 
 
@@ -215,10 +211,11 @@ myLayouts =
 myKeyBindings =
   [
     ((myModMask, xK_b), sendMessage ToggleStruts)
-    , ((myModMask, xK_a), sendMessage MirrorShrink)
-    , ((myModMask, xK_z), sendMessage MirrorExpand)
+    , ((myModMask, xK_s), sendMessage MirrorShrink)
+    , ((myModMask, xK_x), sendMessage MirrorExpand)
     , ((myModMask, xK_p), spawn "synapse")
-    , ((myModMask, xK_u), focusUrgent)
+    , ((myModMask, xK_a), focusUrgent)
+    , ((myModMask .|. shiftMask, xK_BackSpace), clearUrgents)
     , ((0, 0x1008FF12), spawn "amixer -q set Master toggle")
     , ((0, 0x1008FF11), spawn "amixer -q set Master 10%-")
     , ((0, 0x1008FF13), spawn "amixer -q set Master 10%+")
@@ -276,7 +273,7 @@ myManagementHooks = [
   , appName =? "sun-awt-X11-XWindowPeer" --> doFloat
   , className =? "Yakuake" --> doFloat
   , className =? "Exe" --> doFloat
-  , className =? "vlc" --> doF (W.shift "9:Pix")
+  , className =? "vlc" --> doF (W.shift "Media")
   , className =? "Plasma-desktop" --> doFloat
   , className =? "pantheon-notify" --> doFloat
   , (className =? "Komodo IDE") --> doF (W.shift "5:Dev")
@@ -287,8 +284,8 @@ myManagementHooks = [
   , (className =? "Empathy") --> doF (W.shift "7:Chat")
   , (className =? "Skype") --> doF (W.shift "7:Chat")
   , (className =? "Pidgin") --> doF (W.shift "7:Chat")
-  , (className =? "Gimp-2.8") --> doF (W.shift "9:Pix")
-  , (className =? "Amarok") --> doF (W.shift "9:Pix")
+  , (className =? "Gimp-2.8") --> doF (W.shift "9:Amarok")
+  , (className =? "Amarok") --> doF (W.shift "9:Amarok")
   ]
 
 
@@ -347,33 +344,43 @@ myKeys = myKeyBindings ++
       , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
   ] ++ 
   [
-    ((myModMask .|. shiftMask, xK_g), gotoMenu)
-    , ((myModMask .|. shiftMask, xK_b), bringMenu)
+    ((myModMask .|. shiftMask, xK_g), gotoMenuArgs ["-l", "100"])
+    , ((myModMask .|. shiftMask, xK_b), bringMenuArgs ["-l", "100"])
   ]
 
 
 {-
   New status bars, with dzen2
 -}
-myXmoBar = "xmobar ~/.xmonad/xmobarrc"
-myXmonadBar = "dzen2 -x '0' -y '0' -h '24' -w '790' -ta 'l'" ++ myDzenStyle
-myStatusBar = "conky -c /home/ktoso/.xmonad/.conky_dzen | dzen2 -x '790' -y '0' -w '777' -h '24' -ta 'r'" ++ myDzenStyle
+leftMacFlags   = "-h 24 -w 810  -ta l"
+rightMacFlags  = "-h 24 -w 810  -ta r -x 810"
+leftDellFlags  = "-h 24 -w 1280 -ta l"
+rightDellFlags = "-h 24 -w 1280 -ta r -x 1280"
+
+myXmonadBar1 = "dzen2 -xs 1" ++ leftDellFlags ++ myDzenStyle
+myXmonadBar2 = "dzen2 -xs 2" ++ leftMacFlags  ++ myDzenStyle
+myXmonadBar3 = "dzen2 -xs 3" ++ leftDellFlags ++ myDzenStyle
+myStatusBar1 = "conky -c /home/ktoso/.xmonad/.conky_dzen | dzen2 -xs 1 -h 24 -w 1244 -ta r -x 1280" ++ myDzenStyle
+myStatusBar2 = "conky -c /home/ktoso/.xmonad/.conky_dzen | dzen2 -xs 2" ++ rightMacFlags  ++ myDzenStyle
+myStatusBar3 = "conky -c /home/ktoso/.xmonad/.conky_dzen | dzen2 -xs 3" ++ rightDellFlags ++ myDzenStyle
 myBitmapsDir = "/home/ktoso/.xmonad/dzen2"
-myDzenStyle = " -bg '#000' -fg '#FFFFFF'"
+myDzenStyle = " -bg '#0D0D0D' -fg '#FFFFFF'"
 
 {-
   Here we actually stitch together all the configuration settings
   and run xmonad. We also spawn an instance of xmobar and pipe
   content into it via the logHook..
-
-  xmproc <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
-  dzenRightBar <- spawnPipe myStatusBar
 -}
 
 main = do
-  conky  <- spawnPipe myStatusBar
-  xmproc <- spawnPipe myXmonadBar
-  xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig {
+  conky1  <- spawnPipe myStatusBar1
+  xmproc1 <- spawnPipe myXmonadBar1
+  conky2  <- spawnPipe myStatusBar2
+  xmproc2 <- spawnPipe myXmonadBar2
+  conky3  <- spawnPipe myStatusBar3
+  xmproc3 <- spawnPipe myXmonadBar3
+  xmonad $ withUrgencyHook NoUrgencyHook $ kdeConfig { -- defaultConfig
+--  xmonad $ withUrgencyHook dzenUrgencyHook { args = ["-bg", "darkgreen", "-xs", "1", "-y", "22"] } 
     focusedBorderColor = myFocusedBorderColor
   , normalBorderColor = myNormalBorderColor
   , terminal = myTerminal
@@ -386,11 +393,14 @@ main = do
       takeTopFocus >> setWMName "LG3D"
       windows $ W.greedyView startupWorkspace
       spawn "~/.xmonad/startup-hook"
-  , manageHook = manageHook defaultConfig
+  , manageHook = manageHook kde4Config -- defaultConfig
       <+> composeAll myManagementHooks
       <+> manageDocks
   , logHook = dynamicLogWithPP $ xmobarPP {
-      ppOutput = hPutStrLn xmproc
+      ppOutput = do 
+          hPutStrLn xmproc1
+          hPutStrLn xmproc2
+          hPutStrLn xmproc3
       , ppTitle = dzenColor myTitleColor "" . shorten myTitleLength
       , ppCurrent = dzenColor myCurrentWSColor ""
         . wrap myCurrentWSLeft myCurrentWSRight

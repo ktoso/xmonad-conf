@@ -16,6 +16,10 @@
     cursor_color = "#dedede"
     foreground_color = "#ffffff"
     font = Source Code Pro Medium 10
+  [[white]]
+    background_image = None
+    background_color = "#fdf6e3"
+    foreground_color = "#657b83"
 [layouts]
   [[default]]
     [[[child1]]]
