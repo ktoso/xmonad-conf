@@ -32,6 +32,7 @@ import XMonad.Layout.Circle
 import XMonad.Layout.PerWorkspace (onWorkspace)
 import XMonad.Layout.Fullscreen
 import XMonad.Hooks.ICCCMFocus
+import XMonad.Hooks.FadeInactive
 
 import XMonad.Util.EZConfig
 import XMonad.Util.Run
@@ -70,7 +71,7 @@ mySkypeRosterTitle   = "kmalawski - Skype\033$(C\"b"
 -}
 
 myTitleColor     = "#eeeeee"  -- color of window title
-myTitleLength    = 80         -- truncate window title to this length
+myTitleLength    = 120         -- truncate window title to this length
 myCurrentWSColor = "#00c0fa"  -- color of active workspace
 myVisibleWSColor = "#c185a7"  -- color of inactive workspace
 myUrgentWSColor  = "#cc0000"  -- color of workspace with 'urgent' window
@@ -274,6 +275,7 @@ myManagementHooks = [
   , className =? "Yakuake" --> doFloat
   , className =? "Exe" --> doFloat
   , className =? "vlc" --> doF (W.shift "Media")
+  , className =? "Thunderbird" --> doF (W.shift "3:Mail")
   , className =? "Plasma-desktop" --> doFloat
   , className =? "pantheon-notify" --> doFloat
   , (className =? "Komodo IDE") --> doF (W.shift "5:Dev")
@@ -357,12 +359,12 @@ rightMacFlags  = "-h 24 -w 810  -ta r -x 810"
 leftDellFlags  = "-h 24 -w 1280 -ta l"
 rightDellFlags = "-h 24 -w 1280 -ta r -x 1280"
 
-myXmonadBar1 = "dzen2 -xs 1" ++ leftDellFlags ++ myDzenStyle
-myXmonadBar2 = "dzen2 -xs 2" ++ leftMacFlags  ++ myDzenStyle
-myXmonadBar3 = "dzen2 -xs 3" ++ leftDellFlags ++ myDzenStyle
+myXmonadBar1 = "dzen2 -xs 1 " ++ leftDellFlags ++ myDzenStyle
+myXmonadBar2 = "dzen2 -xs 2 " ++ leftMacFlags  ++ myDzenStyle
+myXmonadBar3 = "dzen2 -xs 3 " ++ leftDellFlags ++ myDzenStyle
 myStatusBar1 = "conky -c /home/ktoso/.xmonad/.conky_dzen | dzen2 -xs 1 -h 24 -w 1244 -ta r -x 1280" ++ myDzenStyle
-myStatusBar2 = "conky -c /home/ktoso/.xmonad/.conky_dzen | dzen2 -xs 2" ++ rightMacFlags  ++ myDzenStyle
-myStatusBar3 = "conky -c /home/ktoso/.xmonad/.conky_dzen | dzen2 -xs 3" ++ rightDellFlags ++ myDzenStyle
+myStatusBar2 = "conky -c /home/ktoso/.xmonad/.conky_dzen | dzen2 -xs 2 " ++ rightMacFlags  ++ myDzenStyle
+myStatusBar3 = "conky -c /home/ktoso/.xmonad/.conky_dzen | dzen2 -xs 3 " ++ rightDellFlags ++ myDzenStyle
 myBitmapsDir = "/home/ktoso/.xmonad/dzen2"
 myDzenStyle = " -bg '#0D0D0D' -fg '#FFFFFF'"
 
@@ -379,7 +381,7 @@ main = do
   xmproc2 <- spawnPipe myXmonadBar2
   conky3  <- spawnPipe myStatusBar3
   xmproc3 <- spawnPipe myXmonadBar3
-  xmonad $ withUrgencyHook NoUrgencyHook $ kdeConfig { -- defaultConfig
+  xmonad $ withUrgencyHook NoUrgencyHook $ kde4Config { -- defaultConfig
 --  xmonad $ withUrgencyHook dzenUrgencyHook { args = ["-bg", "darkgreen", "-xs", "1", "-y", "22"] } 
     focusedBorderColor = myFocusedBorderColor
   , normalBorderColor = myNormalBorderColor
@@ -397,10 +399,10 @@ main = do
       <+> composeAll myManagementHooks
       <+> manageDocks
   , logHook = dynamicLogWithPP $ xmobarPP {
-      ppOutput = do 
-          hPutStrLn xmproc1
-          hPutStrLn xmproc2
-          hPutStrLn xmproc3
+      ppOutput = \s -> do 
+          hPutStrLn xmproc1 s
+          hPutStrLn xmproc2 s
+          hPutStrLn xmproc3 s
       , ppTitle = dzenColor myTitleColor "" . shorten myTitleLength
       , ppCurrent = dzenColor myCurrentWSColor ""
         . wrap myCurrentWSLeft myCurrentWSRight
